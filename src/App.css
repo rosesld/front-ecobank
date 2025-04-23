@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+  .swiper-button-next::after, .swiper-button-prev::after {
+    font-size: 10px;
+    font-weight: lighter;
+    color: white;
+    content: '';
+    display: inline-block;
+  }
