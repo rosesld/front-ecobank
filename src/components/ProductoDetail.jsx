@@ -1,6 +1,8 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import Loader from "../components/Loader";
 
 import "swiper/css";
 
@@ -10,6 +12,14 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 const ProductDetail = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  if (loading) return <Loader />;
+
     return (
       <section className="px-4 py-8 bg-gray-50">
       <div className="max-w-screen-lg mx-auto bg-white p-8 rounded-lg shadow-md">
