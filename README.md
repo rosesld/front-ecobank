@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🌎 **EcoMarket & BancoSimple**: Un Ecosistema Integrado de Comercio y Finanzas  
 
 ## 🚀 **¿Qué es EcoMarket & BancoSimple?**  
