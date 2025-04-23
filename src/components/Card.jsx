@@ -1,20 +1,37 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Card = ({ product }) => (
-    <div className="flex-shrink-0 w-72 bg-white border border-gray-200 rounded-lg shadow-sm mx-2">
-        <a href="#">
-            <img className="p-8 rounded-t-lg" src={product.image} alt={product.name} />
-        </a>
-        <div className="px-5 pb-5">
-            <a href="#">
-                <h5 className="text-xl font-semibold tracking-tight text-gray-900">{product.name}</h5>
-            </a>
-            <div className="mt-4 flex items-center space-x-3">
-                <span className="text-sm line-through text-gray-500">${product.oldPrice}</span>
-                <span className="text-2xl font-bold text-gray-900">${product.price}</span>
-            </div>
+  <div className="flex-shrink-0 w-56 h-[300px] bg-white border border-gray-200 rounded-lg shadow-sm mx-2 flex flex-col">
+    <a href="#" className="block flex-grow">
+      <img
+        className="w-full h-48 object-contain rounded-t-lg"
+        src={product.image}
+        alt={product.name}
+        loading="lazy"
+      />
+    </a>
+    <div className="px-4 pb-4 flex flex-col flex-grow">
+    <Link to={`/producto/${product.id}`}>
+  <h5 className="text-sm font-semibold text-gray-900 truncate hover:underline">
+    {product.name}
+  </h5>
+</Link>
+
+      {/* Alineación de precios */}
+      <div className="mt-2 flex flex-col space-y-1">
+        {/* Precio antiguo */}
+        {product.oldPrice && (
+          <span className="text-sm line-through text-gray-500">{`$${product.oldPrice}`}</span>
+        )}
+
+        {/* Precio actual */}
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-2xl font-bold text-gray-900">${product.price}</span>
         </div>
+      </div>
     </div>
+  </div>
 );
 
 export default Card;
