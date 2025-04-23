@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Logo from '../assets/img/logo.png';
+import { Link } from 'react-router-dom';
 
 
 const NavbarModern = () => {
@@ -22,7 +23,9 @@ const NavbarModern = () => {
         <div className="flex justify-between items-center h-16 relative">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <img src={Logo} className="h-30 w-30 object-contain" alt="Logo" />
+            <Link to="/">
+              <img src={Logo} className="h-30 w-30 object-contain" alt="Logo" />
+            </Link>
             
           </div>
 

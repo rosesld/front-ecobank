@@ -1,25 +1,20 @@
+import React from "react";
 
-const Card = () => {
-    return (
-        <>
-            <div className="flex flex-col gap-2 p-8 sm:flex-row sm:items-center sm:gap-6 sm:py-4  bg-gray-100 rounded-lg shadow-md">
-                <img className="mx-auto block h-24 rounded-full sm:mx-0 sm:shrink-0" src="/public/img/imagen.jpg"
-                     alt=""/>
-                <div className="space-y-2 text-center sm:text-left">
-                    <div className="space-y-0.5">
-                        <p className="text-lg font-semibold text-black">Erin Lindford</p>
-                        <p className="font-medium text-gray-500">Product Engineer</p>
-                    </div>
-                    <button
-                        className="border-purple-200 text-purple-600 hover:border-transparent hover:bg-purple-600 hover:text-white active:bg-purple-700 ...">
-                        Message
-                    </button>
-                </div>
+const Card = ({ product }) => (
+    <div className="flex-shrink-0 w-72 bg-white border border-gray-200 rounded-lg shadow-sm mx-2">
+        <a href="#">
+            <img className="p-8 rounded-t-lg" src={product.image} alt={product.name} />
+        </a>
+        <div className="px-5 pb-5">
+            <a href="#">
+                <h5 className="text-xl font-semibold tracking-tight text-gray-900">{product.name}</h5>
+            </a>
+            <div className="mt-4 flex items-center space-x-3">
+                <span className="text-sm line-through text-gray-500">${product.oldPrice}</span>
+                <span className="text-2xl font-bold text-gray-900">${product.price}</span>
             </div>
-        </>
-    )
-
-}
+        </div>
+    </div>
+);
 
 export default Card;
-
