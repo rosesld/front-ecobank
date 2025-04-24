@@ -17,28 +17,28 @@ const products = [
         oldPrice: 449,
     },
     {
-        id: 3,
+        id: 4,
         name: "Fitbit Versa 4",
         image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad",
         price: 249,
         oldPrice: 299,
     },
     {
-        id: 3,
+        id: 5,
         name: "Fitbit Versa 4",
         image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad",
         price: 249,
         oldPrice: 299,
     },
     {
-        id: 3,
+        id: 6,
         name: "Fitbit Versa 4",
         image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad",
         price: 249,
         oldPrice: 299,
     },
     {
-        id: 3,
+        id: 7,
         name: "Fitbit Versa 4",
         image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad",
         price: 249,
@@ -49,7 +49,7 @@ const products = [
 const ProductosHome = () => {
     return (
         <section className="px-4 py-8 bg-gray-50">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Productos Destacados</h2>
+            <h2 className="text-3xl font-bold mb-4 text-gray-800">Productos Destacados</h2>
             <div className="overflow-x-auto pb-4">
                 <div className="flex space-x-4 snap-x snap-mandatory scroll-smooth">
                     {products.map((product) => (

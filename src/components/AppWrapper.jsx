@@ -7,6 +7,7 @@ import RegisterPages from "../pages/RegisterPages";
 import ProductoDetail from "../components/ProductoDetail";
 import ScrollToTop from "./ScrollToTop";
 import Navbar from "./Navbar";
+import Login from "../pages/Login";
 
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
@@ -25,6 +26,7 @@ const AppWrapper = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<RegisterPages />} />
         <Route path="/producto/:id" element={<ProductoDetail />} />
       </Routes>
