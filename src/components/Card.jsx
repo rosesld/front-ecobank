@@ -1,25 +1,41 @@
+import React from "react";
+import { Link } from "react-router-dom";
 
-const Card = () => {
-    return (
-        <>
-            <div className="flex flex-col gap-2 p-8 sm:flex-row sm:items-center sm:gap-6 sm:py-4  bg-gray-100 rounded-lg shadow-md">
-                <img className="mx-auto block h-24 rounded-full sm:mx-0 sm:shrink-0" src="/public/img/imagen.jpg"
-                     alt=""/>
-                <div className="space-y-2 text-center sm:text-left">
-                    <div className="space-y-0.5">
-                        <p className="text-lg font-semibold text-black">Erin Lindford</p>
-                        <p className="font-medium text-gray-500">Product Engineer</p>
-                    </div>
-                    <button
-                        className="border-purple-200 text-purple-600 hover:border-transparent hover:bg-purple-600 hover:text-white active:bg-purple-700 ...">
-                        Message
-                    </button>
-                </div>
-            </div>
-        </>
-    )
+const Card = ({ product }) => (
+  <div className="flex-shrink-0 w-56 h-[300px] bg-white border border-gray-200 rounded-lg shadow-sm mx-2 flex flex-col">
+    <a href="#" className="block flex-grow">
+      <Link to={`/producto/${product.id}`}>
+        <img
+          className="w-full h-48 object-contain rounded-t-lg"
+          src={product.image}
+          alt={product.name}
+          loading="lazy"
+        />
+      </Link>
+    </a>
+    <div className="px-4 pb-4 flex flex-col flex-grow">
+      <Link to={`/producto/${product.id}`}>
+        <h5 className="text-sm font-semibold text-gray-900 truncate hover:underline">
+          {product.name}
+        </h5>
+      </Link>
 
-}
+      {/* Alineación de precios */}
+      <div className="mt-2 flex flex-col space-y-1">
+        {/* Precio antiguo */}
+        {product.oldPrice && (
+          <span className="text-sm line-through text-gray-500">{`$${product.oldPrice}`}</span>
+        )}
+
+        {/* Precio actual */}
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-2xl font-bold text-gray-900">
+            ${product.price}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default Card;
-

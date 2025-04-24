@@ -1,16 +1,16 @@
-import './App.css'
-import Card from "./components/Card.jsx";
-import Navbar from './components/Navbar.jsx';
+import "./App.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppWrapper from "./components/AppWrapper";
+import { LoaderProvider } from "./context/LoaderContext";
 
 function App() {
-
-
   return (
-    <>
-      <Navbar/>
-      {/* <Card /> */}
-    </>
-  )
+    <LoaderProvider>
+      <Router>
+        <AppWrapper />
+      </Router>
+    </LoaderProvider>
+  );
 }
 
-export default App
+export default App;
