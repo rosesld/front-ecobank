@@ -9,6 +9,10 @@ import ScrollToTop from "./ScrollToTop";
 import Navbar from "./Navbar";
 import Login from "../pages/Login";
 
+import ProtectedRoutes from "../routes/ProtectedRoutes";
+import HomeCliente from "../pages/cliente/HomeCliente";
+import HomeVendedor from "../pages/vendedor/HomeVendedor";
+
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
   const location = useLocation();
@@ -29,6 +33,14 @@ const AppWrapper = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<RegisterPages />} />
         <Route path="/producto/:id" element={<ProductoDetail />} />
+
+        {/* 🔐 Rutas protegidas */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/cliente/home" element={<HomeCliente />} />
+          <Route path="/cliente/compras" element={<Compras />} />
+          <Route path="/cliente/perfil" element={<PerfilCliente />} />
+          <Route path="/vendedor/home" element={<HomeVendedor />} />
+        </Route>
       </Routes>
     </>
   );
