@@ -32,14 +32,14 @@ const categorias = [
     rowSpan: 1,
   },
   {
-    nombre: "Cosmética natural / Cuidado personal",
-    imagen: "https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29zbWV0aWNhJTIwbmF0dXJhbHxlbnwwfHwwfHx8MA%3D%3D",
+    nombre: "Mascota",
+    imagen: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=800&q=80",
     colSpan: 1,
     rowSpan: 1,
   },
   {
-    nombre: "Mascotas",
-    imagen: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=800&q=80",
+    nombre: "Cosmética natural / Cuidado personal",
+    imagen: "https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29zbWV0aWNhJTIwbmF0dXJhbHxlbnwwfHwwfHx8MA%3D%3D",
     colSpan: 2,
     rowSpan: 1,
   },
