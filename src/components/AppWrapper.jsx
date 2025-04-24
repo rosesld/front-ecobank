@@ -11,7 +11,11 @@ import Login from "../pages/Login";
 
 import ProtectedRoutes from "../routes/ProtectedRoutes";
 import HomeCliente from "../pages/cliente/HomeCliente";
+import Compras from "../pages/cliente/Compras";
+import PerfilCliente from "../pages/cliente/PerfilCliente";
+
 import HomeVendedor from "../pages/vendedor/HomeVendedor";
+import GestionProductos from "../pages/vendedor/GestionProductos";
 
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
@@ -34,12 +38,17 @@ const AppWrapper = () => {
         <Route path="/registro" element={<RegisterPages />} />
         <Route path="/producto/:id" element={<ProductoDetail />} />
 
-        {/* 🔐 Rutas protegidas */}
+        {/* 🔐 Rutas protegidas cliente */}
         <Route element={<ProtectedRoutes />}>
           <Route path="/cliente/home" element={<HomeCliente />} />
           <Route path="/cliente/compras" element={<Compras />} />
           <Route path="/cliente/perfil" element={<PerfilCliente />} />
-          <Route path="/vendedor/home" element={<HomeVendedor />} />
+        </Route>
+
+        {/* Rutas protegidas para el Vendedor */}
+        <Route element={<ProtectedRoutes />}>
+            <Route path="vendedor/home" element={<HomeVendedor />} />
+            <Route path="vendedor/productos" element={<GestionProductos />} />
         </Route>
       </Routes>
     </>
