@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import Logo from '../assets/img/logo.png';
 import { Link } from 'react-router-dom';
 
-
 const NavbarModern = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriasOpen, setCategoriasOpen] = useState(false);
   const [usuarioOpen, setUsuarioOpen] = useState(false);
   const [search, setSearch] = useState('');
 
+  //Simulación de sesión: null si no hay sesión, objeto si sí
+  const usuario = null; // cambiar a { nombre: 'Juan Pérez' } si está logueado
+  //const usuario = { nombre: 'Juan Pérez' };
+
   const categorias = ['Ropa', 'Tecnología', 'Hogar', 'Juguetes'];
-  const usuario = { nombre: 'Juan Pérez' };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -26,10 +28,9 @@ const NavbarModern = () => {
             <Link to="/">
               <img src={Logo} className="h-30 w-30 object-contain" alt="Logo" />
             </Link>
-            
           </div>
 
-          {/* Buscador centrado */}
+          {/* Buscador */}
           <div className="hidden md:flex flex-1 justify-center">
             <form onSubmit={handleSearch} className="relative flex w-full max-w-xl">
               {/* Categorías dropdown */}
@@ -72,34 +73,40 @@ const NavbarModern = () => {
             </form>
           </div>
 
-          {/* Usuario + Mobile Toggle */}
+          {/* Usuario / Login */}
           <div className="flex items-center space-x-4">
-            {/* Usuario menu desktop */}
-            <div className="hidden md:block relative">
-              <button
-                onClick={() => setUsuarioOpen(!usuarioOpen)}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition"
-              >
-                <span>{usuario.nombre}</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {usuarioOpen && (
-                <div className="absolute right-0 top-12 bg-white border shadow-md rounded w-48 z-50">
-                  <a href="/perfil" className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">Perfil</a>
-                  <a href="/historial" className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">Historial</a>
-                  <button
-                    onClick={() => alert("Cerrando sesión")}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              )}
-            </div>
+            {/* Si hay sesión, muestra el nombre y menú */}
+            {usuario ? (
+              <div className="hidden md:block relative">
+                <button
+                  onClick={() => setUsuarioOpen(!usuarioOpen)}
+                  className="flex items-center space-x-2 px-4 py-2 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition"
+                >
+                  <span>{usuario.nombre}</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {usuarioOpen && (
+                  <div className="absolute right-0 top-12 bg-white border shadow-md rounded w-48 z-50">
+                    <a href="/perfil" className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">Perfil</a>
+                    <a href="/historial" className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700">Historial</a>
+                    <button
+                      onClick={() => alert("Cerrando sesión")}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="text-sm font-medium text-blue-700 hover:underline">
+                Iniciar sesión
+              </Link>
+            )}
 
-            {/* Hamburguesa móvil */}
+            {/* Botón hamburguesa */}
             <div className="md:hidden">
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
@@ -118,10 +125,10 @@ const NavbarModern = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menú móvil */}
       {mobileOpen && (
         <div className="md:hidden px-4 py-4 space-y-4 bg-white border-t shadow-sm">
-          {/* Buscador en móvil */}
+          {/* Buscador móvil */}
           <form onSubmit={handleSearch} className="flex w-full">
             <input
               type="text"
@@ -138,6 +145,7 @@ const NavbarModern = () => {
             </button>
           </form>
 
+          {/* Categorías móvil */}
           <div>
             <p className="text-gray-600 font-semibold">Categorías</p>
             {categorias.map((cat, i) => (
@@ -151,17 +159,20 @@ const NavbarModern = () => {
             ))}
           </div>
 
-          <div>
-            <p className="text-gray-600 font-semibold">Cuenta</p>
-            <a href="/perfil" className="block text-gray-700 py-1 px-2 hover:bg-gray-100 rounded">Perfil</a>
-            <a href="/historial" className="block text-gray-700 py-1 px-2 hover:bg-gray-100 rounded">Historial</a>
-            <button
-              onClick={() => alert("Cerrando sesión")}
-              className="w-full text-left py-1 px-2 text-red-600 hover:bg-red-100 rounded"
-            >
-              Cerrar sesión
-            </button>
-          </div>
+          {/* Menú cuenta móvil solo si hay usuario */}
+          {usuario && (
+            <div>
+              <p className="text-gray-600 font-semibold">Cuenta</p>
+              <a href="/perfil" className="block text-gray-700 py-1 px-2 hover:bg-gray-100 rounded">Perfil</a>
+              <a href="/historial" className="block text-gray-700 py-1 px-2 hover:bg-gray-100 rounded">Historial</a>
+              <button
+                onClick={() => alert("Cerrando sesión")}
+                className="w-full text-left py-1 px-2 text-red-600 hover:bg-red-100 rounded"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>
