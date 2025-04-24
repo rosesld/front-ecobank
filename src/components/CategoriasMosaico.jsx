@@ -56,7 +56,7 @@ const CategoriasMosaico = () => {
       <h2 className="text-3xl font-bold text-gray-800 mb-4">Categorías</h2>
 
       {/* Grid fijo: 4 columnas para cuadrar bien los spans */}
-      <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[150px] md:auto-rows-[200px] gap-1">
+      <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[150px] md:auto-rows-[170px] gap-1">
         {categorias.map((cat, i) => (
           <div
             key={i}
