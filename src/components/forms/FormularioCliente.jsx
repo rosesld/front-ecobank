@@ -2,7 +2,7 @@ const FormularioCliente = () => {
     return (
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg mx-auto">
         <h2 className="text-2xl font-semibold mb-4">Formulario de Cliente</h2>
-        <form>
+        <form id="formulario-cliente">
           <div className="mb-4">
             <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre Completo</label>
             <input type="text" id="nombre" name="nombre" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />

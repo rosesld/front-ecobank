@@ -201,7 +201,7 @@ const GestionProductos = () => {
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
-                      className="absolute top-1 right-1 text-red-600 hover:text-red-800 p-1 rounded-full bg-white shadow-md"
+                      className="absolute top-1 right-1 text-red-600 hover:text-red-800 p-1 rounded-full bg-white shadow-md cursor-pointer"
                     >
                       <XMarkIcon className="w-4 h-4" />
                     </button>

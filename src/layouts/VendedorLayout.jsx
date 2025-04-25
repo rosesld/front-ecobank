@@ -4,8 +4,8 @@ import { HomeIcon, InboxIcon, ClipboardIcon, UserIcon } from '@heroicons/react/2
 
 const VendedorLayout = ({ children }) => {
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <aside className="w-64 bg-white shadow-lg p-6 rounded-lg hidden sm:block">
+    <div className="flex min-h-screen bg-gray-100 pt-16">
+      <aside className="w-64 h-[90vh] sticky top-16 bg-white shadow-lg p-6 hidden sm:block">
         {/* Menú Vendedor */}
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Menú Vendedor</h2>
         <ul className="space-y-4">

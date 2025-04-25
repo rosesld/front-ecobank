@@ -48,7 +48,7 @@ const products = [
 
 const ProductosHome = () => {
     return (
-        <section className="px-4 py-8 bg-gray-50">
+        <section className="px-4 py-12 bg-gray-50">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">Productos Destacados</h2>
             <div className="overflow-x-auto pb-4">
                 <div className="flex space-x-4 snap-x snap-mandatory scroll-smooth">

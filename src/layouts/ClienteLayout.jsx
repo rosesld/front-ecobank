@@ -5,7 +5,7 @@ import { HomeIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outlin
 const ClienteLayout = ({ children }) => {
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 pt-16">
       {/* Menú para pantallas grandes */}
       <aside className="w-64 bg-white shadow-lg p-6 rounded-lg hidden sm:block">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Menú Cliente</h2>
@@ -93,7 +93,7 @@ const ClienteLayout = ({ children }) => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      <main className="flex-1 p-6 overflow-y-auto pt-16">{children}</main>
     </div>
   );
 };

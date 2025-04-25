@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full pt-16 sm:pt-16 lg:pt-16">
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
@@ -41,13 +41,13 @@ const Banner = () => {
                 </h2>
                 <div className="space-x-0 sm:space-x-4 flex flex-col sm:flex-row justify-center items-center">
                   <button className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 mb-2 sm:mb-0 sm:mr-4 cursor-pointer">
-                    <Link to="/registro" className="w-full h-full">
+                    <Link to="/registro?tipo=vendedor" className="w-full h-full">
                       {slide.ctaText1 || "¡Comienza a vender hoy!"}
                     </Link>
                   </button>
 
                   <button className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition duration-300 cursor-pointer">
-                    <Link to="/registro" className="w-full h-full">
+                    <Link to="/registro?tipo=cliente" className="w-full h-full">
                       {slide.ctaText2 || "Explora y compra ahora"}
                     </Link>
                   </button>

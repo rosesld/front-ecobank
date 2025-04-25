@@ -23,7 +23,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[90vh] bg-gray-100">
+    <div className="flex justify-center items-center h-[100vh] bg-gray-100">
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <h5 className="text-xl font-medium text-gray-900">Iniciar sesión en la plataforma</h5>
