@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import Loader from "../components/Loader";
-
-import "swiper/css";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,15 +12,22 @@ import "swiper/css/scrollbar";
 
 const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Hook para navegación
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
+  const handleBuyNow = () => {
+    // Aquí puedes agregar lógica adicional si necesitas
+    // como guardar el producto en el estado global antes de redirigir
+    navigate("/checkout/shipping"); // Redirige al formulario de envío
+  };
+
   if (loading) return <Loader />;
 
-    return (
-      <section className="px-4 py-8 bg-gray-50">
+  return (
+    <section className="px-4 py-8 bg-gray-50">
       <div className="max-w-screen-lg mx-auto bg-white p-8 rounded-lg shadow-md">
         {/* Imágenes del Producto */}
         <div className="flex flex-col md:flex-row">
@@ -83,14 +89,17 @@ const ProductDetail = () => {
               </button>
 
               {/* Botón para "Comprar ahora" */}
-              <button className="bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-300">
+              <button 
+                onClick={handleBuyNow}
+                className="bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-300"
+              >
                 Comprar ahora
               </button>
             </div>
           </div>
         </div>
 
-        {/* Información adicional (por ejemplo, especificaciones, reseñas, etc.) */}
+        {/* Información adicional */}
         <div className="mt-8">
           <h3 className="text-xl font-semibold text-gray-800">Especificaciones</h3>
           <ul className="mt-4 space-y-2 text-gray-700">
@@ -114,7 +123,7 @@ const ProductDetail = () => {
         </div>
       </div>
     </section>
-    );
-  };
-  
-  export default ProductDetail;
+  );
+};
+
+export default ProductDetail;
