@@ -23,10 +23,10 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     const producto = {
-      id: 1,
-      nombre: "Apple Watch Series 7",
-      precio: 399,
-      imagen: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad"
+      id: 1, // o un ID único si es dinámico
+    name: "Apple Watch Series 7",
+    image: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad",
+    price: 399,
     };
     addToCart(producto);
   };
