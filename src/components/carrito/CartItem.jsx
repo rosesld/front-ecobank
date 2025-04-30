@@ -1,30 +1,32 @@
-const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
-    return (
-      <div className="border-b py-4">
-        <h3 className="font-medium text-lg">{item.name}</h3>
-        <p className="text-gray-600 text-sm my-1">{item.description}</p>
-        <p className="text-gray-500 text-sm">Vendido por: {item.seller}</p>
-        
-        <div className="flex justify-between items-center mt-2">
-          <span className="font-semibold">${item.price.toLocaleString()}</span>
-          <div className="flex items-center space-x-3">
-            <button 
-              onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-              className="px-2 bg-gray-100 rounded"
-            >
-              -
-            </button>
-            <span>{item.quantity}</span>
-            <button 
-              onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-              className="px-2 bg-gray-100 rounded"
-            >
-              +
-            </button>
-          </div>
-        </div>
+import React from 'react';
+
+export default function CartItem({ 
+  id, 
+  image, 
+  title, 
+  subtitle, 
+  price, 
+  onRemove 
+}) {
+  return (
+    <div className="flex items-center bg-white rounded-xl p-4 space-x-4 shadow-sm">
+      <img 
+        src={image} 
+        alt={title} 
+        className="w-24 h-24 rounded-lg object-cover"
+      />
+      <div className="flex-1">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-sm text-gray-500">{subtitle}</p>
+        <p className="mt-1 text-xl font-bold">${price.toLocaleString()}</p>
       </div>
-    );
-  };
-  
-  export default CartItem;
+      <button 
+        onClick={() => onRemove(id)}
+        className="text-gray-400 hover:text-gray-600"
+        aria-label="Eliminar producto"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}

@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import Logo from '../assets/img/logo.png';
 import { Link } from 'react-router-dom';
 
+import { useCart } from '../context/CartContext';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+
+
 const NavbarModern = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriasOpen, setCategoriasOpen] = useState(false);
   const [usuarioOpen, setUsuarioOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const { cartItems } = useCart();
 
   //Simulación de sesión: null si no hay sesión, objeto si sí
   const usuario = null; // cambiar a { nombre: 'Juan Pérez' } si está logueado
@@ -71,6 +76,18 @@ const NavbarModern = () => {
                 Buscar
               </button>
             </form>
+          </div>
+
+          <div className="relative flex items-center mx-auto">
+            <Link to="/carrito" className="relative">
+              <ShoppingCartIcon className="h-6 w-6 text-gray-700" />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartItems.length}
+                </span>
+              )}
+            </Link>
+
           </div>
 
           {/* Usuario / Login */}

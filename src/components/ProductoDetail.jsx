@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import Loader from "../components/Loader";
+import { useCart } from "../context/CartContext";
 
 import "swiper/css";
 
@@ -17,6 +18,19 @@ const ProductDetail = () => {
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    const producto = {
+      id: 1,
+      nombre: "Apple Watch Series 7",
+      precio: 399,
+      imagen: "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/126514635_01/w=800,h=800,fit=pad"
+    };
+    addToCart(producto);
+  };
+
 
   if (loading) return <Loader />;
 
@@ -78,7 +92,7 @@ const ProductDetail = () => {
             {/* Botones de acción */}
             <div className="mt-6 flex flex-col space-y-4">
               {/* Botón para "Agregar al carrito" */}
-              <button className="bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300">
+              <button onClick={handleAddToCart} className="bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300">
                 Agregar al carrito
               </button>
 

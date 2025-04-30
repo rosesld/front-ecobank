@@ -16,6 +16,7 @@ import PerfilCliente from "../pages/cliente/PerfilCliente";
 
 import HomeVendedor from "../pages/vendedor/HomeVendedor";
 import GestionProductos from "../pages/vendedor/GestionProductos";
+import CartPage from "../pages/cliente/CartPage";
 
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
@@ -37,6 +38,7 @@ const AppWrapper = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<RegisterPages />} />
         <Route path="/producto/:id" element={<ProductoDetail />} />
+        <Route path="/carrito" element={<CartPage />} />
 
         {/* 🔐 Rutas protegidas cliente */}
         <Route element={<ProtectedRoutes />}>

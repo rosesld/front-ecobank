@@ -3,14 +3,19 @@ import { BrowserRouter as Router } from "react-router-dom";
 import AppWrapper from "./components/AppWrapper";
 import { LoaderProvider } from "./context/LoaderContext";
 import { AuthProvdider } from "./context/AuthContext";
+import CartPage from "./pages/cliente/CartPage";
+import { CartProvider } from "./context/CartContext";
+
 
 function App() {
   return (
     <LoaderProvider>
       <AuthProvdider>
-      <Router>
-        <AppWrapper />
-      </Router>
+        <CartProvider>
+          <Router>
+            <AppWrapper />
+          </Router>
+        </CartProvider>
       </AuthProvdider>
     </LoaderProvider>
   );
