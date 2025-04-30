@@ -23,6 +23,7 @@ import PerfilVendedor from "../pages/vendedor/PerfilVendedor";
 import HomeVendedor from "../pages/vendedor/HomeVendedor";
 import GestionProductos from "../pages/vendedor/GestionProductos";
 import QuienesSomos from "../pages/QuienesSomos";
+import CartPage from "../pages/cliente/CartPage";
 
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
@@ -44,6 +45,7 @@ const AppWrapper = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<RegisterPages />} />
         <Route path="/producto/:id" element={<ProductoDetail />} />
+        <Route path="/carrito" element={<CartPage />} />
         <Route path="/quienes-somos" element={<QuienesSomos />} />
 
         <Route path="/checkout/shipping" element={<ShippingForm />} />
