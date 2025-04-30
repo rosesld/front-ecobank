@@ -3,6 +3,8 @@ import React from 'react';
 export default function CartSummary({ items, onCheckout }) {
   const total = items.reduce((sum, item) => sum + item.price, 0);
 
+  const isDisabled = items.length === 0;
+
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
       <h2 className="text-xl font-semibold">Resumen compra</h2>
@@ -16,7 +18,12 @@ export default function CartSummary({ items, onCheckout }) {
       </div>
       <button
         onClick={onCheckout}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium"
+        disabled={isDisabled}
+        className={`w-full py-3 rounded-lg font-medium text-white transition ${
+          isDisabled
+            ? 'bg-gray-300 cursor-not-allowed'
+            : 'bg-blue-600 hover:bg-blue-700'
+        }`}
       >
         Continuar Compra
       </button>

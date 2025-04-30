@@ -78,7 +78,7 @@ const NavbarModern = () => {
             </form>
           </div>
 
-          <div className="relative flex items-center mx-auto">
+          <div className="relative flex items-center mx-auto mr-4">
             <Link to="/carrito" className="relative">
               <ShoppingCartIcon className="h-6 w-6 text-gray-700" />
               {cartItems.length > 0 && (
