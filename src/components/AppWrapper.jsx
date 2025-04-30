@@ -19,9 +19,10 @@ import OrderReview from "../pages/cliente/OrderReview";
 import PaymentMethod from "../pages/cliente/PaymentMethod";
 import OrderConfirmation from "../pages/cliente/OrderConfirmation";
 
-// import PerfilVendedor from "../pages/vendedor/PerfilVendedor";
+import PerfilVendedor from "../pages/vendedor/PerfilVendedor";
 import HomeVendedor from "../pages/vendedor/HomeVendedor";
 import GestionProductos from "../pages/vendedor/GestionProductos";
+import QuienesSomos from "../pages/QuienesSomos";
 
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
@@ -43,6 +44,7 @@ const AppWrapper = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<RegisterPages />} />
         <Route path="/producto/:id" element={<ProductoDetail />} />
+        <Route path="/quienes-somos" element={<QuienesSomos />} />
 
         <Route path="/checkout/shipping" element={<ShippingForm />} />
         <Route path="/checkout/review" element={<OrderReview />} />
@@ -59,7 +61,7 @@ const AppWrapper = () => {
         <Route element={<ProtectedRoutes />}>
           <Route path="/vendedor/home" element={<HomeVendedor />} />
           <Route path="/vendedor/productos" element={<GestionProductos />} />
-          {/* <Route path="vendedor/perfil" element={<PerfilVendedor />} /> */}
+          <Route path="vendedor/perfil" element={<PerfilVendedor />} />
         </Route>
       </Routes>
     </>
