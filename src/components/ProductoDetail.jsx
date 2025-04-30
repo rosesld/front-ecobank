@@ -43,10 +43,9 @@ const ProductDetail = () => {
 
     addToCart(producto);
 
-    toast.success("Producto agregado al carrito 馃洅", {
+    toast.success(`${producto.title} agregado al carrito`, {
       style: {
-        background: '#4caf50',
-        color: 'white',
+        color: 'black',
         fontSize: '16px',
         position: 'top-center'
       },
@@ -58,7 +57,6 @@ const ProductDetail = () => {
   return (
     <section className="px-4 py-8 bg-gray-50">
       <div className="max-w-screen-lg mx-auto bg-white p-8 rounded-lg shadow-md">
-        {/* Im谩genes del Producto */}
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-2/3">
             <Swiper
