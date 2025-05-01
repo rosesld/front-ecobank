@@ -17,6 +17,7 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@tailwindcss/vite": "^4.1.4",
+    "axios": "^1.9.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.9.2",
     "react": "^19.0.0",

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import {
   PlusIcon,
   PencilIcon,
@@ -7,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ConfirmModal from "../../components/ConfirmModal";
 import InfoModal from "../../components/InfoModal";
+import { createProduct } from "../../services/productService";
 
 const GestionProductos = () => {
   const [productos, setProductos] = useState([]);
@@ -17,6 +19,7 @@ const GestionProductos = () => {
     stock: "",
     descuento: "",
     imagenes: [],
+    categoriaId: "",
   });
   const [editando, setEditando] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -34,30 +37,59 @@ const GestionProductos = () => {
     message: "",
   });
 
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await axios.get(`http://localhost:9090/api/categorias/all`);
+        setCategorias(res.data);
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+      }
+    };
+    fetchCategorias();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editando) {
-      setProductos((prev) =>
-        prev.map((p) => (p.id === editando.id ? { ...form, id: p.id } : p))
-      );
-    } else {
-      setProductos((prev) => [...prev, { ...form, id: Date.now() }]);
+  
+    try {
+      const data = new FormData();
+      data.append('nombre', form.nombre);
+      data.append('descripcion', form.descripcion);
+      data.append('precio', form.precio);
+      data.append('stock', form.stock);
+      data.append('descuento', form.descuento || 0);
+      data.append("categoria.categoriaId", form.categoriaId);
+      console.log("categoria.categoriaId", form.categoriaId);
+  
+      form.imagenes.forEach((img) => {
+        data.append('imagenes', img);
+      });
+  
+      const nuevoProducto = await createProduct(data);
+  
+      setProductos((prev) => [...prev, nuevoProducto]);
+  
+      setForm({
+        nombre: '',
+        descripcion: '',
+        precio: '',
+        stock: '',
+        descuento: '',
+        imagenes: [],
+      });
+      setMostrarFormulario(false);
+    } catch (error) {
+      console.error('Error al agregar producto:', error);
+      mostrarInfoModal('Error', 'No se pudo agregar el producto.');
     }
-    setForm({
-      nombre: "",
-      descripcion: "",
-      precio: "",
-      stock: "",
-      descuento: "",
-      imagenes: [],
-    });
-    setEditando(null);
-    setMostrarFormulario(false);
   };
 
   const eliminarProducto = (id) => {
@@ -165,6 +197,21 @@ const GestionProductos = () => {
               </div>
             )
           )}
+
+          <select
+            name="categoriaId"
+            value={form.categoriaId}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border border-gray-300 rounded"
+          >
+            <option value="">Selecciona una categoría</option>
+            {categorias.map(cat => (
+              <option key={cat.categoriaId} value={cat.categoriaId}>
+                {cat.categoriaNombre}
+              </option>
+            ))}
+          </select>
 
           <div className="flex flex-col">
             <label

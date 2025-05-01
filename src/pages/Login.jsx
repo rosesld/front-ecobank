@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login } = useAuth(); // Traemos la función login del contexto
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simulación: el rol depende del correo
-    const userData = {
-      nombre: 'Usuario Demo',
-      rol: email === 'vendedor@demo.com' ? 'vendedor' : 'cliente',
-    };
+    try {
+      // Llamamos a la función login del contexto
+      await login(email, password);
 
-    login(userData); // Guarda el usuario en contexto
-    navigate(`/${userData.rol}/home`); // Redirige según el rol
+      // Si el login es exitoso, redirigimos al home
+      navigate("/vendedor/home");
+    } catch (err) {
+      // Si ocurre un error, mostramos un mensaje
+      setError("Credenciales incorrectas.");
+    }
   };
 
   return (
@@ -27,6 +31,8 @@ const Login = () => {
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <h5 className="text-xl font-medium text-gray-900">Iniciar sesión en la plataforma</h5>
+
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <div>
             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
@@ -74,7 +80,7 @@ const Login = () => {
           </button>
 
           <div className="text-sm font-medium text-gray-500">
-            ¿No tienes una cuenta?{' '}
+            ¿No tienes una cuenta?{" "}
             <Link to="/registro" className="text-blue-700 hover:underline">
               Crear cuenta
             </Link>

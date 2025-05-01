@@ -1,41 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
 
-const Card = ({ product }) => (
-  <div className="flex-shrink-0 w-56 h-[300px] bg-white border border-gray-200 rounded-lg shadow-sm mx-2 flex flex-col">
-    
-      <Link to={`/producto/${product.id}`}>
-        <img
-          className="w-full h-48 object-contain rounded-t-lg"
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-        />
-      </Link>
-    
-    <div className="px-4 pb-4 flex flex-col flex-grow">
-      <Link to={`/producto/${product.id}`}>
-        <h5 className="text-sm font-semibold text-gray-900 truncate hover:underline">
-          {product.name}
-        </h5>
-      </Link>
+const Card = ({ product }) => {
+  const { nombreProducto, urlsImagenes, precioProducto } = product;
 
-      {/* Alineación de precios */}
-      <div className="mt-2 flex flex-col space-y-1">
-        {/* Precio antiguo */}
-        {product.oldPrice && (
-          <span className="text-sm line-through text-gray-500">{`$${product.oldPrice}`}</span>
-        )}
+  // Asegúrate de que 'urlsImagenes' tiene al menos una imagen
+  const imageUrl = urlsImagenes && urlsImagenes.length > 0 ? urlsImagenes[0] : 'default-image.jpg'; // Una imagen predeterminada si no hay imagen
 
-        {/* Precio actual */}
-        <div className="flex items-center justify-between mt-1">
-          <span className="text-2xl font-bold text-gray-900">
-            ${product.price}
-          </span>
-        </div>
+  return (
+    <div className="card">
+      <img src={imageUrl} alt={nombreProducto} className="product-image" />
+      <div className="card-body">
+        <h3 className="product-name">{nombreProducto}</h3>
+        <p className="product-price">${precioProducto}</p>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Card;
