@@ -9,7 +9,8 @@ const apiClient = axios.create({
 // Interceptor para incluir automáticamente el token JWT
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // Asegúrate de guardar el token aquí después del login
+    const token = localStorage.getItem("token");
+    console.log("TOKEN QUE SE ENVÍA:", token);  // Asegúrate de guardar el token aquí después del login
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,7 +21,7 @@ apiClient.interceptors.request.use(
 
 // Endpoints
 const FETCH_PRODUCTS_URL = "/productos/filtrados-productos";
-const CREATE_PRODUCT_URL = "/guardar";
+const CREATE_PRODUCT_URL = "/productos/guardar";
 
 // Función para obtener productos
 export const fetchProducts = async () => {

@@ -60,35 +60,38 @@ const GestionProductos = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const vendedor = { vendedorId: 1 };
-
   
-  console.log("Datos enviados al backend:", form);
-
+    console.log("Datos enviados al backend:", form);
+  
     try {
+      const producto = {
+        nombreProducto: form.nombre,
+        descripcionProducto: form.descripcion,
+        precioProducto: parseFloat(form.precio),
+        stockProducto: parseInt(form.stock),
+        descuentoProducto: parseFloat(form.descuento || 0),
+        categoriaId: parseInt(form.categoriaId),
+      };
+      
       const data = new FormData();
-      data.append("nombre", form.nombre);
-      data.append("descripcion", form.descripcion);
-      data.append("precio", form.precio);
-      data.append("stock", form.stock);
-      data.append("descuento", form.descuento || 0);
-      data.append("categoria.categoriaId", form.categoriaId);
-      data.append("vendedor", JSON.stringify(vendedor));  
 
+      // Enviar el JSON como Blob con tipo application/json
+      const jsonBlob = new Blob([JSON.stringify(producto)], { type: 'application/json' });
+      data.append("producto", jsonBlob);
+      
       form.imagenes.forEach((img) => {
+        console.log("agregando imagenes al formData", img)
         data.append("imagenes", img);
       });
-
-   
-    for (let pair of data.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
-
+  
+      for (let pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+  
       const nuevoProducto = await createProduct(data);
-
+  
       setProductos((prev) => [...prev, nuevoProducto]);
-
+  
       setForm({
         nombre: "",
         descripcion: "",
@@ -121,6 +124,7 @@ const GestionProductos = () => {
         ...prevForm,
         imagenes: [...prevForm.imagenes, ...files],
       }));
+      console.log("Imagenes seleccionadas", files)
     } else {
       mostrarInfoModal(
         "Límite de imágenes alcanzado",
