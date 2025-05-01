@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, Routes, Route } from "react-router-dom";
+import { useLocation, Routes, Route, Navigate } from "react-router-dom";
 import { useLoader } from "../context/LoaderContext";
 import Loader from "./Loader";
 import Home from "../pages/Home";
@@ -9,7 +9,7 @@ import ScrollToTop from "./ScrollToTop";
 import Navbar from "./Navbar";
 import Login from "../pages/Login";
 
-
+// Rutas protegidas
 import ProtectedRoutes from "../routes/ProtectedRoutes";
 import HomeCliente from "../pages/cliente/HomeCliente";
 import Compras from "../pages/cliente/Compras";
@@ -37,9 +37,10 @@ const AppWrapper = () => {
 
   return (
     <>
-      {loading && <Loader />}
-      <ScrollToTop />
-      <Navbar />
+      {loading && <Loader />}  
+      <ScrollToTop /> 
+      <Navbar /> 
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -54,16 +55,17 @@ const AppWrapper = () => {
         <Route path="/checkout/order-confirmation" element={<OrderConfirmation />} />
 
         {/* 🔐 Rutas protegidas cliente */}
-        <Route element={<ProtectedRoutes />}>
+        <Route element={<ProtectedRoutes role="CLIENTE" />}>
           <Route path="/cliente/home" element={<HomeCliente />} />
           <Route path="/cliente/compras" element={<Compras />} />
           <Route path="/cliente/perfil" element={<PerfilCliente />} />
         </Route>
-        {/* Rutas protegidas para el Vendedor */}
-        <Route element={<ProtectedRoutes />}>
+
+        {/* 🔐 Rutas protegidas vendedor */}
+        <Route element={<ProtectedRoutes role="VENDEDOR" />}>
           <Route path="/vendedor/home" element={<HomeVendedor />} />
           <Route path="/vendedor/productos" element={<GestionProductos />} />
-          <Route path="vendedor/perfil" element={<PerfilVendedor />} />
+          <Route path="/vendedor/perfil" element={<PerfilVendedor />} />
         </Route>
       </Routes>
     </>

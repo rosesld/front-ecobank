@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import {
   PlusIcon,
@@ -9,6 +8,8 @@ import {
 import ConfirmModal from "../../components/ConfirmModal";
 import InfoModal from "../../components/InfoModal";
 import { createProduct } from "../../services/productService";
+import { fetchCategorias } from "../../services/categoriaService";
+
 
 const GestionProductos = () => {
   const [productos, setProductos] = useState([]);
@@ -40,15 +41,16 @@ const GestionProductos = () => {
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    const fetchCategorias = async () => {
+    const cargarCategorias = async () => {
       try {
-        const res = await axios.get(`http://localhost:9090/api/categorias/all`);
-        setCategorias(res.data);
+        const data = await fetchCategorias();
+        setCategorias(data);
       } catch (error) {
         console.error("Error al cargar categorías:", error);
+        mostrarInfoModal("Error", "No se pudieron cargar las categorías.");
       }
     };
-    fetchCategorias();
+    cargarCategorias();
   }, []);
 
   const handleChange = (e) => {
@@ -58,37 +60,48 @@ const GestionProductos = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const vendedor = { vendedorId: 1 };
+
   
+  console.log("Datos enviados al backend:", form);
+
     try {
       const data = new FormData();
-      data.append('nombre', form.nombre);
-      data.append('descripcion', form.descripcion);
-      data.append('precio', form.precio);
-      data.append('stock', form.stock);
-      data.append('descuento', form.descuento || 0);
+      data.append("nombre", form.nombre);
+      data.append("descripcion", form.descripcion);
+      data.append("precio", form.precio);
+      data.append("stock", form.stock);
+      data.append("descuento", form.descuento || 0);
       data.append("categoria.categoriaId", form.categoriaId);
-      console.log("categoria.categoriaId", form.categoriaId);
-  
+      data.append("vendedor", JSON.stringify(vendedor));  
+
       form.imagenes.forEach((img) => {
-        data.append('imagenes', img);
+        data.append("imagenes", img);
       });
-  
+
+   
+    for (let pair of data.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+
       const nuevoProducto = await createProduct(data);
-  
+
       setProductos((prev) => [...prev, nuevoProducto]);
-  
+
       setForm({
-        nombre: '',
-        descripcion: '',
-        precio: '',
-        stock: '',
-        descuento: '',
+        nombre: "",
+        descripcion: "",
+        precio: "",
+        stock: "",
+        descuento: "",
         imagenes: [],
+        categoriaId: "",
       });
       setMostrarFormulario(false);
     } catch (error) {
-      console.error('Error al agregar producto:', error);
-      mostrarInfoModal('Error', 'No se pudo agregar el producto.');
+      console.error("Error al agregar producto:", error);
+      mostrarInfoModal("Error", "No se pudo agregar el producto.");
     }
   };
 
@@ -131,9 +144,7 @@ const GestionProductos = () => {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-blue-600">
-          Gestión de Productos
-        </h1>
+        <h1 className="text-2xl font-bold text-blue-600">Gestión de Productos</h1>
         <button
           onClick={() => setMostrarFormulario(!mostrarFormulario)}
           className={`flex items-center gap-2 px-4 py-2 rounded transition-all duration-200 ${
@@ -156,7 +167,6 @@ const GestionProductos = () => {
           onSubmit={handleSubmit}
           className="space-y-4 mb-8 max-w-2xl mx-auto p-6 bg-white shadow rounded"
         >
-          {/* Form fields */}
           {["nombre", "descripcion", "precio", "stock", "descuento"].map(
             (field) => (
               <div className="flex flex-col" key={field}>
@@ -206,7 +216,7 @@ const GestionProductos = () => {
             className="w-full p-2 border border-gray-300 rounded"
           >
             <option value="">Selecciona una categoría</option>
-            {categorias.map(cat => (
+            {categorias.map((cat) => (
               <option key={cat.categoriaId} value={cat.categoriaId}>
                 {cat.categoriaNombre}
               </option>
@@ -228,7 +238,6 @@ const GestionProductos = () => {
               multiple
               accept="image/*"
               className="w-full p-2 border border-gray-300 rounded"
-             
             />
           </div>
 
@@ -312,7 +321,6 @@ const GestionProductos = () => {
         </div>
       </div>
 
-      {/* Modal de confirmación */}
       <ConfirmModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

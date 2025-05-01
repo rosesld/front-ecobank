@@ -1,35 +1,46 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+// Instancia de Axios configurada
+const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true, // Si usas cookies
+});
+
+// Interceptor para incluir automáticamente el token JWT
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token"); // Asegúrate de guardar el token aquí después del login
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Endpoints
-const FETCH_PRODUCTS_URL = `${API_BASE_URL}/filtrados-productos`;
-const CREATE_PRODUCT_URL = `${API_BASE_URL}/guardar`;
+const FETCH_PRODUCTS_URL = "/productos/filtrados-productos";
+const CREATE_PRODUCT_URL = "/guardar";
 
+// Función para obtener productos
 export const fetchProducts = async () => {
   try {
-    const response = await axios.get(FETCH_PRODUCTS_URL);
-    console.log("Productos recibidos:", response.data);  // Para que veas toda la respuesta
-    // Extraemos la propiedad 'items' que contiene el array de productos
+    const response = await apiClient.get(FETCH_PRODUCTS_URL);
+    console.log("Productos recibidos:", response.data);  // Debug
     return Array.isArray(response.data.items) ? response.data.items : [];
   } catch (error) {
     console.error("Error al obtener los productos:", error);
-    return [];  // Retorna un array vacío en caso de error
+    throw new Error("No se pudieron obtener los productos.");
   }
 };
 
-// Crear producto
+// Función para crear un producto (envío de FormData)
 export const createProduct = async (formData) => {
   try {
-    const response = await axios.post(CREATE_PRODUCT_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true, // si usas sesiones
-    });
+    const response = await apiClient.post(CREATE_PRODUCT_URL, formData);
     return response.data;
   } catch (error) {
-    console.error("Error al crear el producto:", error);
-    throw error;
+    console.error("Error al crear el producto:", error.response?.data || error.message);
+    throw new Error("No se pudo crear el producto.");
   }
 };

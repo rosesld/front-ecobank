@@ -11,8 +11,13 @@ const ProtectedRoutes = () => {
     return <Navigate to="/login" />;
   }
 
-  // Decide el layout según el rol
-  const Layout = user.rol === 'cliente' ? ClienteLayout : VendedorLayout;
+  // Verifica el rol del usuario y asigna el layout correspondiente
+  const Layout = user.rol === 'cliente' ? ClienteLayout : user.rol === 'vendedor' ? VendedorLayout : null;
+
+  // Si el rol no es ni 'cliente' ni 'vendedor', redirige al inicio o una página de error
+  if (!Layout) {
+    return <Navigate to="/" />;
+  }
 
   // Muestra el layout con el contenido dentro
   return (

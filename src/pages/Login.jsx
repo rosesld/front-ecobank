@@ -1,28 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-
 const Login = () => {
-  const { login } = useAuth(); // Traemos la función login del contexto
+  const { login, user } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (user) {
+      if (user.rol === "vendedor") {
+        navigate("/vendedor/home");
+      } else if (user.rol === "cliente") {
+        navigate("/cliente/home");
+      } else if (user.rol === "cliente_bancario") {
+        navigate("/banco/home");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Llamamos a la función login del contexto
-      await login(email, password);
-
-      // Si el login es exitoso, redirigimos al home
-      navigate("/vendedor/home");
+      await login(email, password); 
+      setError(""); 
     } catch (err) {
-      // Si ocurre un error, mostramos un mensaje
-      setError("Credenciales incorrectas.");
+      setError("Credenciales incorrectas o error del servidor");
     }
   };
 
@@ -64,12 +73,6 @@ const Login = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               required
             />
-          </div>
-
-          <div className="flex items-start justify-between">
-            <a href="#" className="text-sm text-blue-700 hover:underline">
-              ¿Olvidaste tu contraseña?
-            </a>
           </div>
 
           <button

@@ -1,23 +1,22 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
-import axios from "axios"; // Asegúrate de tener axios instalado
-
-// Creamos el contexto de autenticación
 const AuthContext = createContext();
 
-// Proveedor de contexto que envuelve toda la aplicación
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Para manejar la carga de la sesión
+  const [loading, setLoading] = useState(true);
 
-  // Verificamos si ya hay un token en localStorage cuando la app se inicia
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      axios.defaults.headers.Authorization = `Bearer ${token}`; // Establecer el token por defecto para todas las peticiones
-      setUser({ token });
+    const storedUser = localStorage.getItem("user");
+
+    if (token && storedUser) {
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+      setUser(JSON.parse(storedUser));
     }
-    setLoading(false); // Una vez se verifica el token, se puede cargar el resto de la app
+
+    setLoading(false);
   }, []);
 
   const login = async (email, password) => {
@@ -26,11 +25,24 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      
-      const { token, userData } = response.data; // Asumimos que tu API devuelve el token y los datos del usuario
-      localStorage.setItem("token", token); // Guardamos el token en el localStorage
-      axios.defaults.headers.Authorization = `Bearer ${token}`; // Establecemos el token en los headers globales de axios
-      setUser(userData); // Actualizamos el estado con los datos del usuario
+
+      const { token, email: userEmail, id, roles } = response.data;
+
+      let rol = "cliente"; 
+      if (roles.includes("ROLE_VENDEDOR")) rol = "vendedor";
+      else if (roles.includes("ROLE_CLIENTE")) rol = "cliente";
+
+      const userData = {
+        id,
+        email: userEmail,
+        rol,
+      };
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+      setUser(userData);
+      console.log("Login exitoso:", userData);
     } catch (error) {
       console.error("Error al hacer login", error);
       throw new Error("Credenciales incorrectas");
@@ -38,9 +50,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token"); // Limpiamos el token del localStorage
-    setUser(null); // Limpiamos el estado del usuario
-    axios.defaults.headers.Authorization = ""; // Limpiamos los headers de axios
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    axios.defaults.headers.Authorization = "";
   };
 
   return (
@@ -50,5 +63,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook personalizado para acceder al contexto
 export const useAuth = () => useContext(AuthContext);

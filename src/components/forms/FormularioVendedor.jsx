@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import vendedorService from '../../services/vendedorService';
 import { TextField, Button, Grid, Container, Typography } from '@mui/material';
 
@@ -15,6 +16,8 @@ const FormularioVendedor = () => {
     nombrePyme: ''
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -26,7 +29,6 @@ const FormularioVendedor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Aquí llamamos al servicio para crear el vendedor
       await vendedorService.crearVendedor(formData);
       alert('Vendedor creado exitosamente');
       setFormData({
@@ -40,6 +42,9 @@ const FormularioVendedor = () => {
         razonSocial: '',
         nombrePyme: ''
       });
+
+      navigate('/login'); 
+
     } catch (err) {
       console.error('Error al crear vendedor:', err);
       alert('Hubo un error al registrar al vendedor');
@@ -48,15 +53,14 @@ const FormularioVendedor = () => {
 
   return (
     <Container maxWidth="sm" sx={{ paddingTop: 4 }}>
-      <Typography variant="h4" component="h2" align="center" gutterBottom>
+      <Typography variant="h5" align="center" gutterBottom>
         Formulario de Vendedor
       </Typography>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Nombre"
-              variant="outlined"
               fullWidth
               required
               name="nombre"
@@ -64,10 +68,9 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Apellido Paterno"
-              variant="outlined"
               fullWidth
               required
               name="apellidoPaterno"
@@ -75,10 +78,9 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Apellido Materno"
-              variant="outlined"
               fullWidth
               required
               name="apellidoMaterno"
@@ -86,34 +88,31 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Correo Electrónico"
-              variant="outlined"
+              type="email"
               fullWidth
               required
-              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Contraseña"
-              variant="outlined"
+              type="password"
               fullWidth
               required
-              type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Teléfono"
-              variant="outlined"
               fullWidth
               required
               name="telefono"
@@ -121,10 +120,9 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="RUT Pyme"
-              variant="outlined"
               fullWidth
               required
               name="rutPyme"
@@ -132,10 +130,9 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Razón Social"
-              variant="outlined"
               fullWidth
               required
               name="razonSocial"
@@ -143,10 +140,9 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <TextField
               label="Nombre de la Pyme"
-              variant="outlined"
               fullWidth
               required
               name="nombrePyme"
@@ -154,15 +150,13 @@ const FormularioVendedor = () => {
               onChange={handleChange}
             />
           </Grid>
-
-          {/* Este Grid es para el botón debajo de todos los campos */}
           <Grid item xs={12}>
             <Button
               type="submit"
               variant="contained"
               color="primary"
               fullWidth
-              sx={{ padding: '10px', fontSize: '16px' }}
+              sx={{ padding: '12px 0', fontSize: '16px' }}
             >
               Registrar como Vendedor
             </Button>
