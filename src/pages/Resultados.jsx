@@ -1,13 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { filtrarProductos } from "../services/productService";
+import { fetchCategorias } from "../services/categoriaService";
 
-const categoriasMock = [
-  { id: 1, nombre: "Ropa" },
-  { id: 2, nombre: "Tecnología" },
-  { id: 3, nombre: "Hogar" },
-  { id: 4, nombre: "Juguetes" },
-];
 
 const ResultadosPage = () => {
   const location = useLocation();
@@ -16,6 +11,7 @@ const ResultadosPage = () => {
   const [precioMin, setPrecioMin] = useState(0);
   const [precioMax, setPrecioMax] = useState(1000);
   const [orden, setOrden] = useState("productoNombre,asc");
+  const [categorias, setCategorias] = useState([]);
 
   const nombreBusqueda = location.state?.nombreBusqueda || "";
 
@@ -38,6 +34,19 @@ const ResultadosPage = () => {
     }
   };
 
+  const obtenerCategorias = async () => {
+    try {
+      const categoriasObtenidas = await fetchCategorias();
+      setCategorias(categoriasObtenidas);
+    } catch (error) {
+      console.error("Error al obtener categorías:", error);
+    }
+  };
+
+   useEffect(() => {
+      obtenerCategorias();
+    }, []);
+
   useEffect(() => {
     buscarProductos();
   }, [nombreBusqueda, precioMin, precioMax, categoriaSeleccionada, orden]);
@@ -51,17 +60,17 @@ const ResultadosPage = () => {
         {/* Categoría */}
         <div className="mb-4">
           <p className="font-medium">Categoría</p>
-          {categoriasMock.map((cat) => (
-            <div key={cat.id}>
+          {categorias.map((cat) => (
+            <div key={cat.categoriaId}>
               <label className="inline-flex items-center gap-2">
                 <input
                   type="radio"
                   name="categoria"
-                  value={cat.id}
-                  checked={categoriaSeleccionada[0] === cat.id}
-                  onChange={() => setCategoriaSeleccionada([cat.id])}
+                  value={cat.categoriaId}
+                  checked={categoriaSeleccionada[0] === cat.categoriaId}
+                  onChange={() => setCategoriaSeleccionada([cat.categoriaId])}
                 />
-                <span>{cat.nombre}</span>
+                <span>{cat.categoriaNombre}</span>
               </label>
             </div>
           ))}

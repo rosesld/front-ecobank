@@ -1,33 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../assets/img/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { filtrarProductos } from "../services/productService";
+import { fetchCategorias } from "../services/categoriaService"; // Asegúrate de importar la función correcta
 
 const NavbarModern = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriasOpen, setCategoriasOpen] = useState(false);
   const [usuarioOpen, setUsuarioOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [categorias, setCategorias] = useState([]); // Estado para las categorías
 
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const esVendedor = user?.rol === 'vendedor';
+  const esVendedor = user?.rol === "vendedor";
+
   
-  const categorias = ["Ropa", "Tecnología", "Hogar", "Juguetes"];
+  useEffect(() => {
+    const obtenerCategorias = async () => {
+      try {
+        const categoriasData = await fetchCategorias(); // Llamada a la API para obtener las categorías
+        console.log("Categorías recibidas:", categoriasData);// Establecer las categorías en el estado
+        setCategorias(categoriasData); 
+      } catch (error) {
+        console.error("Error al obtener categorías:", error);
+      }
+    };
+
+    obtenerCategorias(); // Ejecutar la función para cargar las categorías
+  }, []); // Solo se ejecuta una vez cuando se monta el componente
 
   const handleSearch = (e) => {
     e.preventDefault();
     navigate("/resultados", { state: { nombreBusqueda: search } });
-    // try {
-    //   // const data = await filtrarProductos({ nombre: search });
-    // } catch (error) {
-    //   console.error("Error al buscar productos:", error);
-    // }
   };
 
   const handleLogout = () => {
@@ -60,13 +69,13 @@ const NavbarModern = () => {
                   </button>
                   {categoriasOpen && (
                     <div className="absolute top-12 left-0 bg-white border shadow-md rounded z-50 w-40">
-                      {categorias.map((cat, i) => (
+                      {categorias.map((cat) => (
                         <a
-                          key={i}
-                          href={`/categoria/${cat.toLowerCase()}`}
+                          key={cat.categoriaId}
+                          href={`/categoria/${cat.categoriaNombre.toLowerCase()}`}
                           className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700"
                         >
-                          {cat}
+                          {cat.categoriaNombre}
                         </a>
                       ))}
                     </div>
@@ -89,6 +98,7 @@ const NavbarModern = () => {
               </form>
             </div>
           )}
+
           {/* Carrito */}
           {(!user || user.rol !== "vendedor") && (
             <div className="relative flex items-center mx-auto mr-4">
@@ -223,15 +233,19 @@ const NavbarModern = () => {
 
           <div>
             <p className="text-gray-600 font-semibold">Categorías</p>
-            {categorias.map((cat, i) => (
-              <Link
-                key={i}
-                to={`/categoria/${cat.toLowerCase()}`}
-                className="block text-gray-700 py-1 px-2 hover:bg-gray-100 rounded"
-              >
-                {cat}
-              </Link>
-            ))}
+            {categorias.length > 0 ? (
+              categorias.map((cat) => (
+                <Link
+                  key={cat.id}
+                  to={`/categoria/${cat.nombre.toLowerCase()}`}
+                  className="block text-gray-700 py-1 px-2 hover:bg-gray-100 rounded"
+                >
+                  {cat.nombre}
+                </Link>
+              ))
+            ) : (
+              <p>Cargando categorías...</p>
+            )}
           </div>
 
           {user && (
