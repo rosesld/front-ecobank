@@ -164,7 +164,7 @@ const HomeVendedor = () => {
       </Card>
 
       {/* Sección de productos destacados */}
-      <ProductosHome />
+      {/* <ProductosHome /> */}
     </Container>
   );
 };

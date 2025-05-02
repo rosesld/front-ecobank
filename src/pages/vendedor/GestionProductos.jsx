@@ -9,7 +9,7 @@ import ConfirmModal from "../../components/ConfirmModal";
 import InfoModal from "../../components/InfoModal";
 import { createProduct } from "../../services/productService";
 import { fetchCategorias } from "../../services/categoriaService";
-
+import { fetchMisProducts } from "../../services/productService";
 
 const GestionProductos = () => {
   const [productos, setProductos] = useState([]);
@@ -22,35 +22,41 @@ const GestionProductos = () => {
     imagenes: [],
     categoriaId: "",
   });
+
   const [editando, setEditando] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
     title: "",
     message: "",
     onConfirm: () => {},
   });
-
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [infoModalContent, setInfoModalContent] = useState({
     title: "",
     message: "",
   });
-
   const [categorias, setCategorias] = useState([]);
+  const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
-    const cargarCategorias = async () => {
+    const cargarDatos = async () => {
       try {
-        const data = await fetchCategorias();
-        setCategorias(data);
+        setCargando(true);
+        const [categoriasData, productosData] = await Promise.all([
+          fetchCategorias(),
+          fetchMisProducts()
+        ]);
+        setCategorias(categoriasData);
+        setProductos(productosData);
       } catch (error) {
-        console.error("Error al cargar categorías:", error);
-        mostrarInfoModal("Error", "No se pudieron cargar las categorías.");
+        console.error("Error al cargar datos:", error);
+        mostrarInfoModal("Error", "No se pudieron cargar los datos iniciales.");
+      } finally {
+        setCargando(false);
       }
     };
-    cargarCategorias();
+    cargarDatos();
   }, []);
 
   const handleChange = (e) => {
@@ -60,8 +66,6 @@ const GestionProductos = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    console.log("Datos enviados al backend:", form);
   
     try {
       const producto = {
@@ -74,19 +78,12 @@ const GestionProductos = () => {
       };
       
       const data = new FormData();
-
-      // Enviar el JSON como Blob con tipo application/json
       const jsonBlob = new Blob([JSON.stringify(producto)], { type: 'application/json' });
       data.append("producto", jsonBlob);
       
       form.imagenes.forEach((img) => {
-        console.log("agregando imagenes al formData", img)
         data.append("imagenes", img);
       });
-  
-      for (let pair of data.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
   
       const nuevoProducto = await createProduct(data);
   
@@ -109,7 +106,7 @@ const GestionProductos = () => {
   };
 
   const eliminarProducto = (id) => {
-    setProductos((prev) => prev.filter((p) => p.id !== id));
+    setProductos((prev) => prev.filter((p) => p.productoId !== id));
   };
 
   const abrirModalConfirmacion = ({ title, message, onConfirm }) => {
@@ -124,7 +121,6 @@ const GestionProductos = () => {
         ...prevForm,
         imagenes: [...prevForm.imagenes, ...files],
       }));
-      console.log("Imagenes seleccionadas", files)
     } else {
       mostrarInfoModal(
         "Límite de imágenes alcanzado",
@@ -145,11 +141,19 @@ const GestionProductos = () => {
     setInfoModalOpen(true);
   };
 
+  const buildImageUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `${import.meta.env.VITE_API_URL}${url}`;
+    return `${import.meta.env.VITE_API_URL}/${url}`;
+  };
+
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6">
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-blue-600">Gestión de Productos</h1>
         <button
+          type="button"
           onClick={() => setMostrarFormulario(!mostrarFormulario)}
           className={`flex items-center gap-2 px-4 py-2 rounded transition-all duration-200 ${
             mostrarFormulario
@@ -280,50 +284,94 @@ const GestionProductos = () => {
         </form>
       )}
 
-      {/* Lista de productos */}
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Grid de productos mejorado */}
+      {cargando ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : (
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {productos.map((p) => (
-            <div key={p.id} className="p-4 bg-white rounded shadow">
-              <h3 className="font-semibold text-lg text-gray-800">
-                {p.nombre}
-              </h3>
-              <p className="text-gray-500">{p.descripcion}</p>
-              <p className="text-green-600 font-bold">${p.precio}</p>
-              <div className="flex justify-end gap-2 mt-4">
-                <button
-                  onClick={() =>
-                    abrirModalConfirmacion({
-                      title: "Editar producto",
-                      message: `¿Estás seguro que deseas editar "${p.nombre}"?`,
-                      onConfirm: () => {
+            <div key={p.productoId} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200">
+              {/* Imagen del producto */}
+              <div className="h-48 bg-gray-100 flex items-center justify-center relative">
+  {p.urlsImagenes?.length > 0 ? (
+    <img
+      src={buildImageUrl(p.urlsImagenes[0]) || "https://via.placeholder.com/300x200?text=Imagen+no+disponible"}
+      alt={p.nombreProducto}
+      className="w-full h-full object-cover"
+      onError={(e) => {
+        if (e.target.src !== "https://via.placeholder.com/300x200?text=Imagen+no+disponible") {
+          console.error('Error loading image:', p.urlsImagenes[0]);
+          e.target.src = "https://via.placeholder.com/300x200?text=Imagen+no+disponible";
+          e.target.className = "w-full h-full object-contain";
+        }
+      }}
+      loading="lazy"
+    />
+  ) : (
+    <div className="text-gray-400 text-center p-4">
+      <span>Sin imagen</span>
+    </div>
+  )}
+</div>
+
+              
+              {/* Contenido del producto */}
+              <div className="p-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-semibold text-lg text-gray-800 mb-1 truncate">
+                    {p.nombreProducto}
+                  </h3>
+                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                    ${p.precioProducto}
+                  </span>
+                </div>
+                
+                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                  {p.descripcionProducto}
+                </p>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">
+                    Stock: {p.stockProducto}
+                  </span>
+                  
+                  {/* Solo los iconos de editar y eliminar como solicitaste */}
+                  <div className="flex gap-2">
+                    <PencilIcon 
+                      className="w-5 h-5 text-blue-600 hover:text-blue-800 cursor-pointer" 
+                      onClick={() => {
                         setEditando(p);
-                        setForm(p);
+                        setForm({
+                          nombre: p.nombreProducto,
+                          descripcion: p.descripcionProducto,
+                          precio: p.precioProducto,
+                          stock: p.stockProducto,
+                          descuento: p.descuentoProducto,
+                          imagenes: [],
+                          categoriaId: p.categoriaId,
+                        });
                         setMostrarFormulario(true);
-                      },
-                    })
-                  }
-                  className="text-yellow-600 hover:text-yellow-800"
-                >
-                  <PencilIcon className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() =>
-                    abrirModalConfirmacion({
-                      title: "Eliminar producto",
-                      message: `¿Deseas eliminar "${p.nombre}"? Esta acción no se puede deshacer.`,
-                      onConfirm: () => eliminarProducto(p.id),
-                    })
-                  }
-                  className="text-red-600 hover:text-red-800"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                </button>
+                      }}
+                    />
+                    <TrashIcon 
+                      className="w-5 h-5 text-red-600 hover:text-red-800 cursor-pointer"
+                      onClick={() =>
+                        abrirModalConfirmacion({
+                          title: "Eliminar producto",
+                          message: `¿Deseas eliminar "${p.nombreProducto}"?`,
+                          onConfirm: () => eliminarProducto(p.productoId),
+                        })
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      )}
 
       <ConfirmModal
         isOpen={modalOpen}
