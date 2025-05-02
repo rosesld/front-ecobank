@@ -3,8 +3,17 @@ import { Box, Typography, IconButton, Avatar } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ProductosHome from "../../components/ProductosHome";
+import { useAuth } from '../../context/AuthContext'
+
 
 const HomeCliente = () => {
+
+  const { user, setUser } = useAuth();
+  const partesNombre = user?.nombreCompleto?.split(" ");
+  const nombreMostrado = `${partesNombre?.[0] ?? ""} ${partesNombre?.[1] ?? ""}`;
+  
+  
+
   return (
     <>
     <Box sx={{ bgcolor: "#A7B8D9", p: 4, borderRadius: 2, mb: 4 }}>
@@ -14,7 +23,7 @@ const HomeCliente = () => {
         </IconButton>
         <Box textAlign="left">
           <Typography variant="h5" fontWeight="bold">
-            Nos encanta verte de nuevo, Juan
+            Nos encanta verte de nuevo, {nombreMostrado}
           </Typography>
           <Typography variant="body1" mt={1}>
             Descubre las novedades y ofertas exclusivas para ti.

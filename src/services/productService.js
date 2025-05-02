@@ -22,6 +22,7 @@ apiClient.interceptors.request.use(
 // Endpoints
 const FETCH_PRODUCTS_URL = "/productos/filtrados-productos";
 const CREATE_PRODUCT_URL = "/productos/guardar";
+const SHOW_PRODUCT_URL = "/productos/mis-productos"; 
 
 // Función para obtener productos
 export const fetchProducts = async () => {
@@ -45,3 +46,26 @@ export const createProduct = async (formData) => {
     throw new Error("No se pudo crear el producto.");
   }
 };
+
+export const fetchMisProducts = async () => {
+  try {
+    const response = await apiClient.get(SHOW_PRODUCT_URL);
+    console.log("Respuesta completa:", response); // Para debug
+    console.log("Datos recibidos:", response.data); // Para debug
+    
+    // Asegurando que siempre devolvamos un array
+    if (response.data && Array.isArray(response.data)) {
+      return response.data; // Si la respuesta es directamente un array
+    } else if (response.data && Array.isArray(response.data.items)) {
+      return response.data.items; // Si los productos están en propiedad 'items'
+    } else if (response.data && response.data.productos) {
+      return response.data.productos; // Otra posible estructura
+    }
+    
+    console.warn("Estructura de datos inesperada:", response.data);
+    return []; // Devuelve array vacío si no coincide con ninguna estructura esperada
+  } catch (error) {
+    console.error("Error al obtener Mis productos:", error);
+    throw new Error("No se pudieron obtener Mis productos.");
+  }
+}
