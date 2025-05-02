@@ -24,6 +24,11 @@ import HomeVendedor from "../pages/vendedor/HomeVendedor";
 import GestionProductos from "../pages/vendedor/GestionProductos";
 import QuienesSomos from "../pages/QuienesSomos";
 import CartPage from "../pages/cliente/CartPage";
+import HomeB from "../banco/pagesB/HomeB";
+import DashBB from "../banco/pagesB/DashBB";
+import Saldo from "../banco/pagesB/Saldo";
+import Movimientos from "../banco/pagesB/Movimientos";
+import Transferencia from "../banco/pagesB/Transferencias";
 
 const AppWrapper = () => {
   const { loading, setLoading } = useLoader();
@@ -37,9 +42,9 @@ const AppWrapper = () => {
 
   return (
     <>
-      {loading && <Loader />}  
-      <ScrollToTop /> 
-      <Navbar /> 
+      {loading && <Loader />}
+      <ScrollToTop />
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -49,10 +54,21 @@ const AppWrapper = () => {
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/quienes-somos" element={<QuienesSomos />} />
 
+        <Route path="/home-banco" element={<HomeB />} />
+        <Route path="/dashboard" element={<DashBB />}>
+          <Route index element={<Saldo />} />
+          <Route path="saldo" element={<Saldo />} />
+          <Route path="movimientos" element={<Movimientos />} />
+          <Route path="transferencia" element={<Transferencia />} />
+        </Route>
+
         <Route path="/checkout/shipping" element={<ShippingForm />} />
         <Route path="/checkout/review" element={<OrderReview />} />
         <Route path="/checkout/payment" element={<PaymentMethod />} />
-        <Route path="/checkout/order-confirmation" element={<OrderConfirmation />} />
+        <Route
+          path="/checkout/order-confirmation"
+          element={<OrderConfirmation />}
+        />
 
         {/* 🔐 Rutas protegidas cliente */}
         <Route element={<ProtectedRoutes role="CLIENTE" />}>
