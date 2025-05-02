@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { filtrarProductos } from "../services/productService";
 
 const NavbarModern = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -21,7 +22,12 @@ const NavbarModern = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    alert(`Buscando: ${search}`);
+    navigate("/resultados", { state: { nombreBusqueda: search } });
+    // try {
+    //   // const data = await filtrarProductos({ nombre: search });
+    // } catch (error) {
+    //   console.error("Error al buscar productos:", error);
+    // }
   };
 
   const handleLogout = () => {

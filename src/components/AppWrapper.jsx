@@ -8,6 +8,7 @@ import ProductoDetail from "../components/ProductoDetail";
 import ScrollToTop from "./ScrollToTop";
 import Navbar from "./Navbar";
 import Login from "../pages/Login";
+import ResultadosPage from "../pages/Resultados";
 
 // Rutas protegidas
 import ProtectedRoutes from "../routes/ProtectedRoutes";
@@ -48,6 +49,7 @@ const AppWrapper = () => {
         <Route path="/producto/:id" element={<ProductoDetail />} />
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/quienes-somos" element={<QuienesSomos />} />
+        <Route path="/resultados" element={<ResultadosPage />} />
 
         <Route path="/checkout/shipping" element={<ShippingForm />} />
         <Route path="/checkout/review" element={<OrderReview />} />

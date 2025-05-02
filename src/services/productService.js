@@ -1,16 +1,14 @@
 import axios from "axios";
 
-// Instancia de Axios configurada
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // Si usas cookies
+  withCredentials: true, 
 });
 
-// Interceptor para incluir automáticamente el token JWT
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    console.log("TOKEN QUE SE ENVÍA:", token);  // Asegúrate de guardar el token aquí después del login
+    console.log("TOKEN QUE SE ENVÍA:", token);  
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,13 +20,14 @@ apiClient.interceptors.request.use(
 // Endpoints
 const FETCH_PRODUCTS_URL = "/productos/filtrados-productos";
 const CREATE_PRODUCT_URL = "/productos/guardar";
-const SHOW_PRODUCT_URL = "/productos/mis-productos"; 
+const SHOW_PRODUCT_URL = "/productos/mis-productos";
+const API_BASE_URL = "http://localhost:9090/api/productos/filtrados-productos";
 
 // Función para obtener productos
 export const fetchProducts = async () => {
   try {
     const response = await apiClient.get(FETCH_PRODUCTS_URL);
-    console.log("Productos recibidos:", response.data);  // Debug
+    console.log("Productos recibidos:", response.data); 
     return Array.isArray(response.data.items) ? response.data.items : [];
   } catch (error) {
     console.error("Error al obtener los productos:", error);
@@ -47,25 +46,43 @@ export const createProduct = async (formData) => {
   }
 };
 
+//Función para mostrar todos mis productos (vendedor)
 export const fetchMisProducts = async () => {
   try {
     const response = await apiClient.get(SHOW_PRODUCT_URL);
-    console.log("Respuesta completa:", response); // Para debug
-    console.log("Datos recibidos:", response.data); // Para debug
+    console.log("Respuesta completa:", response); 
+    console.log("Datos recibidos:", response.data); 
     
-    // Asegurando que siempre devolvamos un array
+    
     if (response.data && Array.isArray(response.data)) {
-      return response.data; // Si la respuesta es directamente un array
+      return response.data; 
     } else if (response.data && Array.isArray(response.data.items)) {
-      return response.data.items; // Si los productos están en propiedad 'items'
+      return response.data.items; 
     } else if (response.data && response.data.productos) {
-      return response.data.productos; // Otra posible estructura
+      return response.data.productos; 
     }
     
     console.warn("Estructura de datos inesperada:", response.data);
-    return []; // Devuelve array vacío si no coincide con ninguna estructura esperada
+    return []; 
   } catch (error) {
     console.error("Error al obtener Mis productos:", error);
     throw new Error("No se pudieron obtener Mis productos.");
   }
 }
+
+export const filtrarProductos = async ({ nombre, precioMin, precioMax, categoriaId, page = 0, size = 10, sort = "productoNombre,asc" }) => {
+  const params = {
+    nombre,
+    precioMin,
+    precioMax,
+    categoriaId,
+    page,
+    size,
+    sort,
+  };
+
+  Object.keys(params).forEach(key => (params[key] == null || params[key] === "") && delete params[key]);
+
+  const response = await axios.get(`${API_BASE_URL}`, { params });
+  return response.data;
+};
