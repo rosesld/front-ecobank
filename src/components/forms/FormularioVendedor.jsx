@@ -52,118 +52,118 @@ const FormularioVendedor = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ paddingTop: 4 }}>
-      <Typography variant="h5" align="center" gutterBottom>
-        Formulario de Vendedor
-      </Typography>
+    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg mx-auto">
+      <h2 className="text-2xl font-semibold mb-4 text-center">Formulario de Vendedor</h2>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Nombre"
-              fullWidth
-              required
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Nombre</label>
+            <input
+              type="text"
               name="nombre"
               value={formData.nombre}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Apellido Paterno"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+            <input
+              type="text"
               name="apellidoPaterno"
               value={formData.apellidoPaterno}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Apellido Materno"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Apellido Materno</label>
+            <input
+              type="text"
               name="apellidoMaterno"
               value={formData.apellidoMaterno}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Correo Electrónico"
-              type="email"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+            <input
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Contraseña"
-              type="password"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Contraseña</label>
+            <input
+              type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Teléfono"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Teléfono</label>
+            <input
+              type="tel"
               name="telefono"
               value={formData.telefono}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="RUT Pyme"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">RUT Pyme</label>
+            <input
+              type="text"
               name="rutPyme"
               value={formData.rutPyme}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Razón Social"
-              fullWidth
               required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Razón Social</label>
+            <input
+              type="text"
               name="razonSocial"
               value={formData.razonSocial}
               onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Nombre de la Pyme"
-              fullWidth
               required
-              name="nombrePyme"
-              value={formData.nombrePyme}
-              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ padding: '12px 0', fontSize: '16px' }}
-            >
-              Registrar como Vendedor
-            </Button>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700">Nombre de la Pyme</label>
+          <input
+            type="text"
+            name="nombrePyme"
+            value={formData.nombrePyme}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          className="mt-6 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 text-lg"
+        >
+          Registrar como Vendedor
+        </button>
       </form>
-    </Container>
+    </div>
   );
 };
 

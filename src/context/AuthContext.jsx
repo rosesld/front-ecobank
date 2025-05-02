@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
         password,
       });
 
-      const { token, email: userEmail, id, roles } = response.data;
+      const { token, email: userEmail, id, roles, nombreCompleto } = response.data;
 
       let rol = "cliente"; 
       if (roles.includes("ROLE_VENDEDOR")) rol = "vendedor";
@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
       const userData = {
         id,
         email: userEmail,
+        nombreCompleto,
         rol,
       };
 
