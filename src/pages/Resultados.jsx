@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { filtrarProductos } from "../services/productService";
 import { fetchCategorias } from "../services/categoriaService";
@@ -122,6 +122,10 @@ const ResultadosPage = () => {
         {productos.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {productos.map((producto) => (
+              <Link 
+                to={`/producto/${producto.productoId}`}
+                key={producto.productoId}
+              >
               <div
                 key={producto.productoId}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-200"
@@ -168,6 +172,7 @@ const ResultadosPage = () => {
                   </div>
                 </div>
               </div>
+            </Link>
             ))}
           </div>
         ) : (

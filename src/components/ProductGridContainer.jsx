@@ -11,7 +11,7 @@ const ProductGridContainer = ({ title }) => {
     const loadProducts = async () => {
       try {
         const data = await fetchProducts();
-        console.log("Productos cargados:", data);  // Verifica qué datos estás recibiendo
+        //console.log("Productos cargados:", data);  // Verifica qué datos estás recibiendo
         setProducts(data);  // Actualiza el estado con el array de productos
       } catch (err) {
         console.error(err);

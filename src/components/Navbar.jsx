@@ -24,7 +24,7 @@ const NavbarModern = () => {
     const obtenerCategorias = async () => {
       try {
         const categoriasData = await fetchCategorias(); // Llamada a la API para obtener las categorías
-        console.log("Categorías recibidas:", categoriasData);// Establecer las categorías en el estado
+        //console.log("Categorías recibidas:", categoriasData);// Establecer las categorías en el estado
         setCategorias(categoriasData); 
       } catch (error) {
         console.error("Error al obtener categorías:", error);

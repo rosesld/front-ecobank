@@ -7,7 +7,7 @@ export default function CartPage() {
   const { cartItems, removeFromCart } = useCart();
 
   const handleCheckout = () => {
-    console.log('Ir a checkout');
+    //console.log('Ir a checkout');
   };
 
   return (

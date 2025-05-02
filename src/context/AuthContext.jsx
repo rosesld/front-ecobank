@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(userData));
       axios.defaults.headers.Authorization = `Bearer ${token}`;
       setUser(userData);
-      console.log("Login exitoso:", userData);
+      //console.log("Login exitoso:", userData);
     } catch (error) {
       console.error("Error al hacer login", error);
       throw new Error("Credenciales incorrectas");

@@ -8,7 +8,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    console.log("TOKEN QUE SE ENVÍA:", token);  
+    ////console.log("TOKEN QUE SE ENVÍA:", token);  
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,7 +27,7 @@ const API_BASE_URL = "http://localhost:9090/api/productos/filtrados-productos";
 export const fetchProducts = async () => {
   try {
     const response = await apiClient.get(FETCH_PRODUCTS_URL);
-    console.log("Productos recibidos:", response.data); 
+    //console.log("Productos recibidos:", response.data); 
     return Array.isArray(response.data.items) ? response.data.items : [];
   } catch (error) {
     console.error("Error al obtener los productos:", error);
@@ -50,8 +50,8 @@ export const createProduct = async (formData) => {
 export const fetchMisProducts = async () => {
   try {
     const response = await apiClient.get(SHOW_PRODUCT_URL);
-    console.log("Respuesta completa:", response); 
-    console.log("Datos recibidos:", response.data); 
+    //console.log("Respuesta completa:", response); 
+    //console.log("Datos recibidos:", response.data); 
     
     
     if (response.data && Array.isArray(response.data)) {

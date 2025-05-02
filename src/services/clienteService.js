@@ -7,7 +7,7 @@ const crearCliente = async (datosCliente) => {
         const response = await axios.post(API_REGISTRO_CLIENTE, datosCliente);
         return response.data;
     } catch (error) {
-        console.log("Error al crear cliente: ", error)
+        //console.log("Error al crear cliente: ", error)
         throw error;
     }
 };

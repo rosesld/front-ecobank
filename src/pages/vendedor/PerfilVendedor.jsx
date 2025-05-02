@@ -37,7 +37,7 @@ const PerfilVendedor = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Perfil actualizado:", perfil);
+    //console.log("Perfil actualizado:", perfil);
   };
 
   return (
